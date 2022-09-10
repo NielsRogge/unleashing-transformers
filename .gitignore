@@ -9,3 +9,12 @@ latents/
 _cache_ReposdatasetsLSUNchurchoutdoortrainlmdb
 *_cache_*
 _pkl_files/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
