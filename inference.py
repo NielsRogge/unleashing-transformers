@@ -5,6 +5,8 @@ from train_sampler import get_sampler
 from utils.sampler_utils import retrieve_autoencoder_components_state_dicts, get_samples
 from utils.log_utils import load_model
 
+from torchvision import utils
+
 
 def main(H):
     # step 1: load the quantizer + generator of the VQ-VAE
@@ -26,9 +28,12 @@ def main(H):
     sampler = sampler.cuda()
 
     # step 3: sample
-    samples = get_samples(H, generator, sampler)
+    print("Sampling images...")
+    images = get_samples(H, generator, sampler)
 
-    return samples
+    utils.save_image(images, "results.png", nrow = H.batch_size)
+
+    return images
 
 
 if __name__ == "__main__":
