@@ -23,9 +23,10 @@ def main(H):
     model = VQAutoEncoder(H)
     ae_load_path = f"{H.ae_load_dir}/saved_models/vqgan_ema_{H.ae_load_step}.th"
     state_dict = torch.load(ae_load_path, map_location="cpu")
-    missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
-    print("Missing keys:", missing_keys)
-    print("Unexpected keys:", unexpected_keys)
+
+    vqgan_state_dict = {k[3:]: v for k, v in state_dict.items() if k.startswith("ae.")}
+
+    model.load_state_dict(vqgan_state_dict, strict=True)
     
     # step 2: run forward pass on cats image
     url = 'http://images.cocodataset.org/val2017/000000039769.jpg'
