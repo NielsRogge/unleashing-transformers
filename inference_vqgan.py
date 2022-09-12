@@ -35,6 +35,7 @@ def main(H):
     pixel_values = image_transformations(image).unsqueeze(0)
     out = model.encoder(pixel_values)
     print("Shape of out:", out.shape)
+    print("First values:", out[0, 0, :3, :3])
 
     return out
 
