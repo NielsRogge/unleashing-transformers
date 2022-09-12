@@ -153,6 +153,9 @@ class AbsorbingDiffusion(Sampler):
             unmasked = torch.bitwise_or(unmasked, changes)
 
             x_0_logits = self._denoise_fn(x_t, t=t)
+
+            print("Shape of x_0_logits:", x_0_logits.shape)
+
             # scale by temperature
             x_0_logits = x_0_logits / temp
             x_0_dist = dists.Categorical(
