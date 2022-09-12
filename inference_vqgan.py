@@ -19,7 +19,8 @@ image_transformations = Compose([Resize, ToTensor, Normalize])
 def main(H):
     # step 1: load the VQ-VAE
     model = VQAutoEncoder(H)
-    state_dict = torch.load(H.ae_load_dir, map_location="cpu")
+    ae_load_path = f"{H.ae_load_dir}/saved_models/vqgan_ema_{H.ae_load_step}.th"
+    state_dict = torch.load(ae_load_path, map_location="cpu")
     missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
     print("Missing keys:", missing_keys)
     print("Unexpected keys:", unexpected_keys)
