@@ -29,9 +29,9 @@ def main(H):
     sampler = load_model(sampler, f"{H.sampler}_ema", H.load_step, H.load_dir)
     sampler = sampler.cuda()
 
-    # test dummy input on Transformer sampler
+    # test dummy input on Transformer denoiser
     dummy_input = torch.tensor([[1024,1024,1024]]).cuda()
-    transformer_out = sampler(dummy_input, t=2)
+    transformer_out = sampler._denoise_fn(dummy_input, t=2)
     print("Shape of transformer out:", transformer_out.shape)
     print("First values of transformer out:", transformer_out[0, :3, :3])
 
