@@ -155,6 +155,7 @@ class AbsorbingDiffusion(Sampler):
             x_0_logits = self._denoise_fn(x_t, t=t)
 
             print("Shape of x_0_logits:", x_0_logits.shape)
+            print("First values of logits:", x_0_logits[0, :3, :3])
 
             # scale by temperature
             x_0_logits = x_0_logits / temp
