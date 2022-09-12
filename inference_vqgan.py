@@ -24,6 +24,7 @@ def main(H):
     ae_load_path = f"{H.ae_load_dir}/saved_models/vqgan_ema_{H.ae_load_step}.th"
     state_dict = torch.load(ae_load_path, map_location="cpu")
 
+    # for now, only load the weights of the encoder, quantizer and decoder
     vqgan_state_dict = {k[3:]: v for k, v in state_dict.items() if k.startswith("ae.")}
 
     missing_keys, unexpected_keys = model.load_state_dict(vqgan_state_dict, strict=False)
@@ -33,11 +34,17 @@ def main(H):
     url = 'http://images.cocodataset.org/val2017/000000039769.jpg'
     image = Image.open(requests.get(url, stream=True).raw)
     pixel_values = image_transformations(image).unsqueeze(0)
-    out = model.encoder(pixel_values)
-    print("Shape of out:", out.shape)
-    print("First values:", out[0, 0, :3, :3])
+    encoder_out = model.encoder(pixel_values)
+    print("Shape of encoder out:", encoder_out.shape)
+    print("First values of encoder out:", encoder_out[0, 0, :3, :3])
 
-    return out
+    quant, codebook_loss, quant_stats = model.quantize(encoder_out)
+    
+    decoder_out = model.decoder(quant)
+    print("Shape of decoder out:", decoder_out.shape)
+    print("First values of decoder out:", decoder_out[0, 0, :3, :3])
+
+    return decoder_out
 
 
 if __name__ == "__main__":
