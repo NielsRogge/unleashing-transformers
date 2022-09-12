@@ -26,7 +26,8 @@ def main(H):
 
     vqgan_state_dict = {k[3:]: v for k, v in state_dict.items() if k.startswith("ae.")}
 
-    model.load_state_dict(vqgan_state_dict, strict=True)
+    missing_keys, unexpected_keys = model.load_state_dict(vqgan_state_dict, strict=False)
+    assert len(unexpected_keys) == 0 and missing_keys == ["generator.logsigma.0.weight", "generator.logsigma.0.bias", "generator.logsigma.2.weight", "generator.logsigma.2.bias"]
     
     # step 2: run forward pass on cats image
     url = 'http://images.cocodataset.org/val2017/000000039769.jpg'
