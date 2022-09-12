@@ -131,6 +131,8 @@ class Transformer(nn.Module):
         # each index maps to a (learnable) vector
         token_embeddings = self.tok_emb(idx)
 
+        print("Token embeddings:", token_embeddings[0,:3,:3])
+
         if self.causal:
             token_embeddings = torch.cat(
                 (self.start_tok.repeat(token_embeddings.size(0), 1, 1), token_embeddings),

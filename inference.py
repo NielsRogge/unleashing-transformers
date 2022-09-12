@@ -30,6 +30,7 @@ def main(H):
     sampler = sampler.cuda()
 
     # test dummy input on Transformer denoiser
+    sampler._denoise_fn.eval()
     dummy_input = torch.tensor([[1024,1024,1024]]).cuda()
     transformer_out = sampler._denoise_fn(dummy_input, t=2)
     print("Shape of transformer out:", transformer_out.shape)
