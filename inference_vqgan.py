@@ -39,6 +39,9 @@ def main(H):
     print("First values of encoder out:", encoder_out[0, 0, :3, :3])
 
     quant, codebook_loss, quant_stats = model.quantize(encoder_out)
+
+    print("Shape of quant:", quant.shape)
+    print("First values of quant:", quant[0, 0, :3, :3])
     
     decoder_out = model.generator(quant)
     print("Shape of decoder out:", decoder_out.shape)
