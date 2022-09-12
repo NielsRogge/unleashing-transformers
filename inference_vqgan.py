@@ -40,7 +40,7 @@ def main(H):
 
     quant, codebook_loss, quant_stats = model.quantize(encoder_out)
     
-    decoder_out = model.decoder(quant)
+    decoder_out = model.generator(quant)
     print("Shape of decoder out:", decoder_out.shape)
     print("First values of decoder out:", decoder_out[0, 0, :3, :3])
 
