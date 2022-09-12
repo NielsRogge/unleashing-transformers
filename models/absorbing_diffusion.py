@@ -138,11 +138,15 @@ class AbsorbingDiffusion(Sampler):
         sample_steps = list(range(1, sample_steps+1))
 
         for t in reversed(sample_steps):
+            print("Timestep:", t)
             print(f'Sample timestep {t:4d}', end='\r')
             t = torch.full((b,), t, device=device, dtype=torch.long)
 
+            # use generator
+            generator = torch.Generator("cuda").manual_seed(1024)
+
             # where to unmask
-            changes = torch.rand(x_t.shape, device=device) < 1/t.float().unsqueeze(-1)
+            changes = torch.rand(x_t.shape, generator=generator, device=device) < 1/t.float().unsqueeze(-1)
             # don't unmask somewhere already unmasked
             changes = torch.bitwise_xor(changes, torch.bitwise_and(changes, unmasked))
             # update mask with changes
